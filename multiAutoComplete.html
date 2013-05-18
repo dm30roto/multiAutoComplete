@@ -16,40 +16,61 @@
 			.container {
 				position: relative;
 			}
-			.altAutoCompleteRight, .altAutoCompleteLeft, .altAutoCompleteTop {
-				display: none;
+			.altAutoCompleteRight, .altAutoCompleteLeft, .altAutoCompleteTop, .altAutoCompleteBottom {
+				/*display: none;*/
 				list-style-type: none;
 				border: thin solid #000000;
 				background-color: #ffffff;
 				margin:0;
 				padding: 0;
 				box-shadow: 2px 2px 5px #888888;
+				display: inline;
+				float:left;
+				position: absolute;
+				width: 200px;
 			}
-			.altAutoCompRight {
-				float: right;
-			}
-			.altAutoCompleteLeft {
-				float: left;
-			}
-			.altAutoCompleteRight li, .altAutoCompleteLeft li, .altAutoCompleteTop li {
+			.altAutoCompleteRight li, .altAutoCompleteLeft li, .altAutoCompleteTop li, .altAutoCompleteBottom li {
 				border-top: thin solid #000;
 				padding: 5px;
 			}
-			.altAutoCompleteRight li:first-child, .altAutoCompleteLeft li:first-child, .altAutoCompleteTop li:first-child {
+			.altAutoCompleteRight li:first-child, .altAutoCompleteLeft li:first-child, .altAutoCompleteTop li:first-child, .altAutoCompleteBottom li:first-child {
 				border-top: none;
+			}
+			.altAutoCompleteBottom {
+				top:125px;
+				left: 300px;
+			}
+			.altAutoCompleteTop {
+				top:-25px;
+				left: 300px;
+			}
+			.altAutoCompleteRight {
+				top:50px;
+				left: 510px;
+			}
+			.altAutoCompleteLeft {
+				top:50px;
+				left: 90px;
+			}
+			input#txt {
+				text-align: center;
+				width: 200px;
+				margin: 100px 300px;
+				display: inline;
+				position: absolute;
 			}
 		</style>
     </head>
 	<body>
 		<p>Sup bitches</p>
 		<div class="container">
+			<input type="text" id="txt" name="txt" list="dlCities" autofocus="true" />
 			<ul class="altAutoCompleteTop">
 				<li>top</li>
 				<li>top</li>
 				<li>top</li>
 				<li>top</li>
 			</ul>
-			<input type="text" id="txt" name="txt" list="dlCities" autofocus="true" />
 			<ul class="altAutoCompleteRight">
 				<li>right</li>
 				<li>right</li>
@@ -62,6 +83,13 @@
 				<li>left</li>
 				<li>left</li>
 			</ul>
+			<ul class="altAutoCompleteBottom">
+				<li>bottom</li>
+				<li>bottom</li>
+				<li>bottom</li>
+				<li>bottom</li>
+			</ul>
+			<!--
 			<datalist id="dlCities" style="height:80px;">
 			    <option value="Seattle" />
 			    <option value="Seattldae" />
@@ -112,20 +140,24 @@
 			    <option value="New York" />
 			    <option value="Salt lake City" />
 			</datalist>
+		-->
 		</div>
 		<script type="text/javascript">
+
 			$(document).ready(function () {
 				$("#txt").on("keyup", function() {
 					var inputTxtBox = $(this);
 					if(inputTxtBox.val() != "") {
 						/*$('.altAutoCompleteRight').show();
 						$('.altAutoCompleteLeft').show();
-						$('.altAutoCompleteTop').show();*/
+						$('.altAutoCompleteTop').show();
+						$('.altAutoCompleteBottom').show();*/
 					}
 					else {
 						$('.altAutoCompleteRight').hide();
 						$('.altAutoCompleteLeft').hide();
 						$('.altAutoCompleteTop').hide();
+						$('.altAutoCompleteBottom').hide();
 					}
 				});
 
@@ -139,13 +171,16 @@
 				        case arrow.right:
 				        	$('.altAutoCompleteRight').show();
 				        break;
-				        case arrow.top:
+				        case arrow.up:
 				        	$('.altAutoCompleteTop').show();
+				        break;
+				        case arrow.down:
+				        	$('.altAutoCompleteBottom').show();
 				        break;
 				    }       
 
 				});
-			});
+			}); 
 		</script>
 	</body>
 </html>
