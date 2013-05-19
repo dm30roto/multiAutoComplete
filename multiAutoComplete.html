@@ -5,8 +5,8 @@
         <title>Things and things and things</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
-        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-		<style>
+        <style type="text/css" src="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"></style>
+        <style>
 			html {
 				background-color: #FCFCFC;
 			}
@@ -17,17 +17,18 @@
 				position: relative;
 			}
 			.altAutoCompleteRight, .altAutoCompleteLeft, .altAutoCompleteTop, .altAutoCompleteBottom {
-				/*display: none;*/
+				display: none;
 				list-style-type: none;
 				border: thin solid #000000;
 				background-color: #ffffff;
 				margin:0;
 				padding: 0;
 				box-shadow: 2px 2px 5px #888888;
-				display: inline;
 				float:left;
 				position: absolute;
 				width: 200px;
+				height: 80px;
+				overflow-y: scroll;
 			}
 			.altAutoCompleteRight li, .altAutoCompleteLeft li, .altAutoCompleteTop li, .altAutoCompleteBottom li {
 				border-top: thin solid #000;
@@ -59,6 +60,13 @@
 				display: inline;
 				position: absolute;
 			}
+			.selected {
+				background-color: #2D76B9;
+				font-weight: strong;
+			}
+			.infocus {
+				display: inline;
+			}
 		</style>
     </head>
 	<body>
@@ -84,66 +92,15 @@
 				<li>left</li>
 			</ul>
 			<ul class="altAutoCompleteBottom">
-				<li>bottom</li>
-				<li>bottom</li>
-				<li>bottom</li>
-				<li>bottom</li>
+				<li>bottom1</li>
+				<li>bottom2</li>
+				<li>bottom3</li>
+				<li>bottom4</li>
 			</ul>
-			<!--
-			<datalist id="dlCities" style="height:80px;">
-			    <option value="Seattle" />
-			    <option value="Seattldae" />
-			    <option value="Seatte" />
-			    <option value="Seatle" />
-			    <option value="Seasdattle" /><option value="Seattle" />
-			    <option value="Seattldae" />
-			    <option value="Seatte" />
-			    <option value="Seatle" />
-			    <option value="Seasdattle" /><option value="Seattle" />
-			    <option value="Seattldae" />
-			    <option value="Seatte" />
-			    <option value="Seatle" />
-			    <option value="Seasdattle" /><option value="Seattle" />
-			    <option value="Seattldae" />
-			    <option value="Seatte" />
-			    <option value="Seatle" />
-			    <option value="Seasdattle" /><option value="Seattle" />
-			    <option value="Seattldae" />
-			    <option value="Seatte" />
-			    <option value="Seatle" />
-			    <option value="Seasdattle" /><option value="Seattle" />
-			    <option value="Seattldae" />
-			    <option value="Seatte" />
-			    <option value="Seatle" />
-			    <option value="Seasdattle" /><option value="Seattle" />
-			    <option value="Seattldae" />
-			    <option value="Seatte" />
-			    <option value="Seatle" />
-			    <option value="Seasdattle" /><option value="Seattle" />
-			    <option value="Seattldae" />
-			    <option value="Seatte" />
-			    <option value="Seatle" />
-			    <option value="Seasdattle" /><option value="Seattle" />
-			    <option value="Seattldae" />
-			    <option value="Seatte" />
-			    <option value="Seatle" />
-			    <option value="Seasdattle" /><option value="Seattle" />
-			    <option value="Seattldae" />
-			    <option value="Seatte" />
-			    <option value="Seatle" />
-			    <option value="Seasdattle" /><option value="Seattle" />
-			    <option value="Seattldae" />
-			    <option value="Seatte" />
-			    <option value="Seatle" />
-			    <option value="Seasdattle" />
-			    <option value="Las Vegas" />
-			    <option value="New York" />
-			    <option value="Salt lake City" />
-			</datalist>
-		-->
 		</div>
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 		<script type="text/javascript">
-
 			$(document).ready(function () {
 				$("#txt").on("keyup", function() {
 					var inputTxtBox = $(this);
@@ -154,10 +111,10 @@
 						$('.altAutoCompleteBottom').show();*/
 					}
 					else {
-						$('.altAutoCompleteRight').hide();
-						$('.altAutoCompleteLeft').hide();
-						$('.altAutoCompleteTop').hide();
-						$('.altAutoCompleteBottom').hide();
+						//$('.altAutoCompleteRight').hide();
+						//$('.altAutoCompleteLeft').hide();
+						//$('.altAutoCompleteTop').hide();
+						//$('.altAutoCompleteBottom').hide();
 					}
 				});
 
@@ -166,20 +123,65 @@
 					var arrow = {left: 37, up: 38, right: 39, down: 40 };
 					switch (e.keyCode) {
 				        case arrow.left:
-				            $('.altAutoCompleteLeft').show();
+				            //$('.altAutoCompleteLeft').show();
 				        break;
 				        case arrow.right:
-				        	$('.altAutoCompleteRight').show();
+				        	//$('.altAutoCompleteRight').show();
 				        break;
 				        case arrow.up:
-				        	$('.altAutoCompleteTop').show();
+				        	//$('.altAutoCompleteTop').show();
+				        	navBottomResults(e);
 				        break;
 				        case arrow.down:
-				        	$('.altAutoCompleteBottom').show();
+				        	//$('.altAutoCompleteBottom').show();
+				        	navBottomResults(e);
 				        break;
 				    }       
-
 				});
+				function navBottomResults (e) {
+					var $container = $('.altAutoCompleteBottom');
+					var $results = $('.altAutoCompleteBottom li');
+					var $current = $results.filter('.selected');
+					var $next;
+					if(!$container.hasClass('infocus')){
+						$container.addClass('infocus');
+						//$container.show();
+					}
+					switch ( e.keyCode ) {
+		                case 38: // Up
+		                    $next = $current.prev();
+		                    
+		                    break;
+		                case 40: // Down
+		                    if (!$results.hasClass('selected')) {
+		                           $results.first().addClass('selected');
+		                    }
+		                    $next = $current.next();                
+		                    break; 
+		                case 13: // Enter
+		                    if ($results.hasClass('selected')) {
+		                        location.href = $current.find('a').attr('href');
+		                        return false;
+		                    }
+		                    break;
+		            }
+		            
+		            //only check next element if up and down key pressed
+		            if ( $next.is('li') ) {
+		                $current.removeClass('selected');
+		                $next.addClass('selected');
+		            }
+		        
+		            //update text in searchbar
+		            if ($results.hasClass('selected')) {                
+		                $('#txt').val($('.selected').text());                
+		            }
+		            
+		            //set cursor position
+		            if(e.keyCode === 38) return false;
+		            
+		            return;
+				}
 			}); 
 		</script>
 	</body>
